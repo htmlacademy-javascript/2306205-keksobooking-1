@@ -1,22 +1,21 @@
 
 // Вспомогательные функции и массивы
+const AMOUNT_USERS = 10;
 
-const getRandomPoint = (min, max, digits) => {
-  return ([min, max, digits].find((element) => element < 0 || typeof element !== 'number')) ?
-  NaN : (Math.random() * (max - min) + min).toFixed(digits);
-}
+const getRandomPoint = (min, max, digits) =>
+  ([min, max, digits].find((element) => element < 0 || typeof element !== 'number')) ?
+    NaN : (Math.random() * (max - min) + min).toFixed(digits);
 
 
-function getRandomInteger (min, max) {
+const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
   const result = Math.random() * (upper - lower + 1) + lower;
-
   return Math.floor(result);
-}
+};
 
 
-function createRandomIdFromRangeGenerator (min, max) {
+const createRandomIdFromRangeGenerator = (min, max) => {
   const previousValues = [];
 
   return function () {
@@ -31,74 +30,68 @@ function createRandomIdFromRangeGenerator (min, max) {
     previousValues.push(currentValue);
     return currentValue;
   };
-}
+};
 
-function getRandomArray (array) {
-  let amountElements = getRandomInteger(1, array.length);
-  let indexElement = createRandomIdFromRangeGenerator(0, array.length - 1);
-  const currenArray = [];
+const createRandomLinksId = createRandomIdFromRangeGenerator(1, AMOUNT_USERS);
 
-  while (currenArray.length < amountElements) {
-    currenArray.push(array[indexElement()]);
+const getRandomLinksId = () => {
+  const currentLinksId = createRandomLinksId();
+  return (currentLinksId < AMOUNT_USERS) ? `${0}${currentLinksId}` : currentLinksId;
+};
+
+
+const getRandomArray = (array) => {
+  const currentArray = [];
+  const amountElements = getRandomInteger(1, array.length);
+  const indexElement = createRandomIdFromRangeGenerator(0, array.length - 1);
+
+  while (currentArray.length < amountElements) {
+    currentArray.push(array[indexElement()]);
   }
-  return currenArray;
-  }
+  return currentArray;
+};
 
 
-const typeAccommodation = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
-const time = ['12:00', '13:00', '14:00'];
-const facilities = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner']; // Создать новый массив со случаным количеством лементов их этого
+const typesAccommodation = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+const checkTimes = ['12:00', '13:00', '14:00'];
+const facilities = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const photoLinks = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
-'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
 
 
 // Объекты
+const author = () => ({
+  avatar: `img/avatars/user${getRandomLinksId()}.png`
+});
 
-let author = {
-  avatar: 'img/avatars/user' + createRandomIdFromRangeGenerator(1, 10)() + '.png'
-}
-
-let location = {
+const locationPoint = () => ({
   lat: getRandomPoint(35.65000, 35.70000, 5),
   lng: getRandomPoint(139.70000, 139.80000, 5),
-}
+});
 
-let offer = {
+
+const offer = () => ({
   title: 'Лучшее жилье на побережье',
-  address: location,
+  address: locationPoint(),
   price: getRandomInteger(1000, 10000),
-  type: typeAccommodation[getRandomInteger(0, typeAccommodation.length - 1)],
-  rooms: getRandomInteger(1, 10),
+  type: typesAccommodation[getRandomInteger(0, typesAccommodation.length - 1)],
+  rooms: getRandomInteger(1, AMOUNT_USERS),
   guests: getRandomInteger(1, 5),
-  checkin: time[getRandomInteger(0, 2)],
-  checkout: time[getRandomInteger(0, 2)],
+  checkin: checkTimes[getRandomInteger(0, 2)],
+  checkout: checkTimes[getRandomInteger(0, 2)],
   features: getRandomArray(facilities),
   description: 'Пять минут пешком до моря, стоянка на два автомобиля, прекрасный сад и бассейн во дворе',
   photos: getRandomArray(photoLinks)
-}
+});
 
 
-function Advert(author, offer, location) {
-  this.author = author;
-  this.offer = offer;
-  this.location = location;
-}
+const advert = () => ({
+  author: author(),
+  offer: offer(),
+  location: locationPoint(),
+});
 
+const advertsList = () => Array.from({length: AMOUNT_USERS}, advert);
 
-
-// Массив объектов
-
-let rentAdvertsList = [];
-
-function getRentAdvertsList () {
-
-while (rentAdvertsList.length <= 10) {
-  let rentAdvert = new Advert (author, offer, location);
-  rentAdvertsList.push(rentAdvert);
-}
-
-return rentAdvertsList
-}
-
-console.log(getRentAdvertsList());
+advertsList();
