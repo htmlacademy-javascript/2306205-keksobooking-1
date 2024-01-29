@@ -61,19 +61,19 @@ const photoLinks = ['https://assets.htmlacademy.ru/content/intensive/javascript-
 
 
 // Объекты
-const author = () => ({
+const getAuthor = () => ({
   avatar: `img/avatars/user${getRandomLinksId()}.png`
 });
 
-const locationPoint = () => ({
+
+const getLocationPoint = () => ({
   lat: getRandomPoint(35.65000, 35.70000, 5),
   lng: getRandomPoint(139.70000, 139.80000, 5),
 });
 
-
-const offer = () => ({
+const getOffer = (locationPoint) => ({
   title: 'Лучшее жилье на побережье',
-  address: locationPoint(),
+  address: `${locationPoint.lat}, ${locationPoint.lng}`,
   price: getRandomInteger(1000, 10000),
   type: typesAccommodation[getRandomInteger(0, typesAccommodation.length - 1)],
   rooms: getRandomInteger(1, AMOUNT_USERS),
@@ -82,16 +82,18 @@ const offer = () => ({
   checkout: checkTimes[getRandomInteger(0, 2)],
   features: getRandomArray(facilities),
   description: 'Пять минут пешком до моря, стоянка на два автомобиля, прекрасный сад и бассейн во дворе',
-  photos: getRandomArray(photoLinks)
+  photos: getRandomArray(photoLinks),
 });
 
+const getAdvert = () => {
+  const locationPoint = getLocationPoint();
+  return {
+    author: getAuthor(),
+    offer: getOffer(locationPoint),
+    location: locationPoint
+  };
+};
 
-const advert = () => ({
-  author: author(),
-  offer: offer(),
-  location: locationPoint(),
-});
+const getadvertsList = () => Array.from({ length: AMOUNT_USERS }, getAdvert);
 
-const advertsList = () => Array.from({length: AMOUNT_USERS}, advert);
-
-advertsList();
+getadvertsList();
