@@ -61,42 +61,38 @@ const photoLinks = ['https://assets.htmlacademy.ru/content/intensive/javascript-
 
 
 // Объекты
+const getAuthor = () => ({
+  avatar: `img/avatars/user${getRandomLinksId()}.png`
+});
+
+
+const getLocationPoint = () => ({
+  lat: getRandomPoint(35.65000, 35.70000, 5),
+  lng: getRandomPoint(139.70000, 139.80000, 5),
+});
+
+const getOffer = (locationPoint) => ({
+  title: 'Лучшее жилье на побережье',
+  address: `${locationPoint.lat}, ${locationPoint.lng}`,
+  price: getRandomInteger(1000, 10000),
+  type: typesAccommodation[getRandomInteger(0, typesAccommodation.length - 1)],
+  rooms: getRandomInteger(1, AMOUNT_USERS),
+  guests: getRandomInteger(1, 5),
+  checkin: checkTimes[getRandomInteger(0, 2)],
+  checkout: checkTimes[getRandomInteger(0, 2)],
+  features: getRandomArray(facilities),
+  description: 'Пять минут пешком до моря, стоянка на два автомобиля, прекрасный сад и бассейн во дворе',
+  photos: getRandomArray(photoLinks),
+});
+
 const getAdvert = () => {
-
-  const getAuthor = () => ({
-    avatar: `img/avatars/user${getRandomLinksId()}.png`
-  });
-
-
-  const getLocationPoint = () => ({
-    lat: getRandomPoint(35.65000, 35.70000, 5),
-    lng: getRandomPoint(139.70000, 139.80000, 5),
-  });
-
   const locationPoint = getLocationPoint();
-
-  const getOffer = () => ({
-    title: 'Лучшее жилье на побережье',
-    address: locationPoint,
-    price: getRandomInteger(1000, 10000),
-    type: typesAccommodation[getRandomInteger(0, typesAccommodation.length - 1)],
-    rooms: getRandomInteger(1, AMOUNT_USERS),
-    guests: getRandomInteger(1, 5),
-    checkin: checkTimes[getRandomInteger(0, 2)],
-    checkout: checkTimes[getRandomInteger(0, 2)],
-    features: getRandomArray(facilities),
-    description: 'Пять минут пешком до моря, стоянка на два автомобиля, прекрасный сад и бассейн во дворе',
-    photos: getRandomArray(photoLinks),
-  });
-
-
   return {
     author: getAuthor(),
-    offer: getOffer(),
+    offer: getOffer(locationPoint),
     location: locationPoint
   };
 };
-
 
 const getadvertsList = () => Array.from({ length: AMOUNT_USERS }, getAdvert);
 
