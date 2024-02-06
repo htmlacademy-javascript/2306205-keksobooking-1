@@ -1,5 +1,6 @@
-const getAdvertsList = () => Array.from({ length: AMOUNT_USERS }, getAdvert);
+import {AMOUNT_USERS} from './data.js';
+import {getAdvert} from './create-advert.js';
 
-getAdvertsList();
+const getAdvertsList = () => Array.from({ length: AMOUNT_USERS }, getAdvert);
 
 export {getAdvertsList};

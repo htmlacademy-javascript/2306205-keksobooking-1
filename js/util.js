@@ -5,6 +5,23 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
+const createRandomIdFromRangeGenerator = (min, max) => {
+  const previousValues = [];
+
+  return function () {
+    let currentValue = getRandomInteger(min, max);
+    if (previousValues.length >= (max - min + 1)) {
+      // console.error('Перебраны все числа из диапазона от ' + min + ' до ' + max);
+      return null;
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomInteger(min, max);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
+};
+
 
 const getRandomArray = (array) => {
   const currentArray = [];
@@ -17,4 +34,4 @@ const getRandomArray = (array) => {
   return currentArray;
 };
 
-export {getRandomInteger, getRandomArray};
+export {getRandomInteger, createRandomIdFromRangeGenerator, getRandomArray};

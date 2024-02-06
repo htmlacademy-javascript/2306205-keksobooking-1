@@ -1,3 +1,6 @@
+import {getRandomInteger, getRandomArray} from './util.js';
+import {AMOUNT_USERS, typesAccommodation, checkTimes, facilities, photoLinks} from './data.js';
+
 const getOffer = (anyParameter) => ({
   title: 'Лучшее жилье на побережье',
   address: `${anyParameter.lat}, ${anyParameter.lng}`,
