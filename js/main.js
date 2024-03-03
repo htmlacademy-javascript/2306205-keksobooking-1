@@ -1,3 +1,1 @@
-import {getAdvertsList} from './create-adverts-list.js';
-
-getAdvertsList();
+import './create-card.js';
