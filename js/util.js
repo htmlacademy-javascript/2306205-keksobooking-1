@@ -34,4 +34,14 @@ const getRandomArray = (array) => {
   return currentArray;
 };
 
-export {getRandomInteger, createRandomIdFromRangeGenerator, getRandomArray};
+const getRandomPoint = (min, max, digits) =>
+  ([min, max, digits].find((element) => element < 0 || typeof element !== 'number')) ?
+    NaN : (Math.random() * (max - min) + min).toFixed(digits);
+
+const getLocationPoint = () => ({
+  lat: getRandomPoint(35.65000, 35.70000, 5),
+  lng: getRandomPoint(139.70000, 139.80000, 5),
+});
+
+
+export {getRandomInteger, createRandomIdFromRangeGenerator, getRandomArray, getRandomPoint, getLocationPoint};

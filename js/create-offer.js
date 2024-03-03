@@ -15,3 +15,4 @@ const getOffer = (anyParameter) => ({
   photos: getRandomArray(photoLinks),
 });
 export {getOffer};
+

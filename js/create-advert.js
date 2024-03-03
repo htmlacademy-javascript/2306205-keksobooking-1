@@ -1,4 +1,4 @@
-import {getLocationPoint} from './create-location.js';
+import {getLocationPoint} from './util.js';
 import {getAuthor} from './create-user.js';
 import {getOffer} from './create-offer.js';
 
