@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Eugene Chepkasov](https://up.htmlacademy.ru/javascript-individual/1/user/2306205).
-* Наставник: `Неизвестно`.
+* Наставник: [Семен Якушев](https://htmlacademy.ru/profile/id1118791).
 
 ---
 
