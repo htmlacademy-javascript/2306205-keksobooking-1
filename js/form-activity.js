@@ -6,8 +6,9 @@ const getFormDisabled = () => {
     form.classList.add(`${form.className}--disabled`);
 
     const formElements = Array.from(form.children);
+
     formElements.forEach((formElement) => {
-      formElement.setAttribute('disabled', '');
+      formElement.disabled = true;
     });
   });
 };
@@ -16,14 +17,16 @@ getFormDisabled();
 
 // Функция для активации форм и фильтров
 
-// const getFormActivated = () => {
-//   forms.forEach((form) => {
-//     form.classList.remove(form.className.contains([class='*--disabled']));
+const getFormActivated = (formClass) => {
+  forms.forEach((form) => {
 
-//     const formElements = Array.from(form.children);
-//     formElements.forEach((formElement) => {
-//       formElement.removeAttribute('disabled', '');
-//     });
-//   });
-// };
+    form.classList.remove(`${formClass}--disabled`);
 
+    const formElements = Array.from(form.children);
+    formElements.forEach((formElement) => {
+      formElement.removeAttribute('disabled', '');
+    });
+  });
+};
+
+getFormActivated('ad-form');
