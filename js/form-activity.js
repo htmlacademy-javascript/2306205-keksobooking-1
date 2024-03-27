@@ -1,24 +1,25 @@
-const forms = document.querySelectorAll('form');
+// const forms = document.querySelectorAll('form');
 
-const getFormDisabled = () => {
+// const getFormDisabled = () => {
 
-  forms.forEach((form) => {
-    form.classList.add(`${form.className}--disabled`);
+//   forms.forEach((form) => {
+//     form.classList.add(`${form.className}--disabled`);
 
-    const formElements = Array.from(form.children);
-    formElements.forEach((formElement) => {
-      formElement.setAttribute('disabled', '');
-    });
-  });
-};
+//     const formElements = Array.from(form.children);
+//     formElements.forEach((formElement) => {
+//       formElement.setAttribute('disabled', '');
+//     });
+//   });
+// };
 
-getFormDisabled();
+// getFormDisabled();
 
 // Функция для активации форм и фильтров
 
-// const getFormActivated = () => {
+// const getFormActivated = (formClass) => {
 //   forms.forEach((form) => {
-//     form.classList.remove(form.className.contains([class='*--disabled']));
+
+//     form.classList.remove(`${formClass}--disabled`);
 
 //     const formElements = Array.from(form.children);
 //     formElements.forEach((formElement) => {
@@ -26,4 +27,3 @@ getFormDisabled();
 //     });
 //   });
 // };
-
