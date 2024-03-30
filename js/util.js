@@ -44,4 +44,17 @@ const getLocationPoint = () => ({
 });
 
 
-export {getRandomInteger, createRandomIdFromRangeGenerator, getRandomArray, getRandomPoint, getLocationPoint};
+// Заменяю форму слов
+const getWordRoom = (card) => {
+  if (card.offer.rooms === 1) {
+    return 'комната';
+  } else if (card.offer.rooms > 4) {
+    return 'комнат';
+  }
+  return 'комнаты';
+};
+
+const getWordGuests = (card) => (card.offer.guests === 1) ? 'гостя' : 'гостей';
+
+
+export {getRandomInteger, createRandomIdFromRangeGenerator, getRandomArray, getRandomPoint, getLocationPoint, getWordRoom, getWordGuests};
