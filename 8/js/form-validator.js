@@ -93,7 +93,7 @@ addAdvertForm.addEventListener('submit', (evt) => {
 const address = addAdvertForm.querySelector('#address');
 mainMarker.on('moveend', (evt) => {
   const coordinates = evt.target.getLatLng();
-  address.value = `широта ${coordinates.lat.toFixed(5)} и долгота ${coordinates.lng.toFixed(5)}`;
+  address.value = `${coordinates.lat.toFixed(5)}, ${coordinates.lng.toFixed(5)}`;
 });
 
 export {price, type, priceOption};
