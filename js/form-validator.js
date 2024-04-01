@@ -1,5 +1,6 @@
-// Проверка комнат и количества гостей
+import {mainMarker} from './create-map.js';
 
+// Проверка комнат и количества гостей
 const addAdvertForm = document.querySelector('.ad-form');
 const rooms = addAdvertForm.querySelector('#room_number');
 const guests = addAdvertForm.querySelector('#capacity');
@@ -33,6 +34,8 @@ function getErrorGuestsMessage () {
   }
 }
 
+pristine.addValidator(rooms, validateGuests, getErrorGuestsMessage);
+
 // Изменение минимального значения и плейсхолдера цены в зависимости от типа жилья
 const price = addAdvertForm.querySelector('#price');
 const type = addAdvertForm.querySelector('#type');
@@ -62,7 +65,6 @@ function getErrorPriceMessage () {
 }
 
 pristine.addValidator(price, validatePrice, getErrorPriceMessage);
-pristine.addValidator(rooms, validateGuests, getErrorGuestsMessage);
 
 // Связывание полей заезда и выезда
 const timein = addAdvertForm.querySelector('#timein');
@@ -78,11 +80,20 @@ timeout.addEventListener('change', () => {
 
 
 // Слушатель и валидация
-// addAdvertForm.addEventListener('change', () => {
-//   pristine.validate();
-// });
+addAdvertForm.addEventListener('change', () => {
+  pristine.validate();
+});
 
 addAdvertForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
 });
+
+// Данные в поле координат
+const address = addAdvertForm.querySelector('#address');
+mainMarker.on('moveend', (evt) => {
+  const coordinates = evt.target.getLatLng();
+  address.value = `${coordinates.lat.toFixed(5)}, ${coordinates.lng.toFixed(5)}`;
+});
+
+export {price, type, priceOption};

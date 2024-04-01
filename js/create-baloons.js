@@ -1,10 +1,6 @@
 import {getAdvertsList} from './create-adverts-list.js';
-
-const cardTemplate = document.querySelector('#card')
-  .content
-  .querySelector('.popup');
-
-const mapCanvas = document.querySelector('.map__canvas');
+import {getWordRoom, getWordGuests} from './util.js';
+import {map} from './create-map.js';
 
 const cards = getAdvertsList();
 
@@ -56,41 +52,45 @@ const addFeatures = (cardsItem, featuresArray) => {
   });
 };
 
-// Формируем карточки
-cards.forEach((card) => {
+// Функция для формирования попапа для маркеров карты
+const createBaloon = (card) => {
+  const cardTemplate = document.querySelector('#card')
+    .content
+    .querySelector('.popup');
+
   const cardsItem = cardTemplate.cloneNode(true);
 
-  // Заменяю форму слова
-  const wordRoom = () => {
-    if (card.offer.rooms === 1) {
-      return 'комната';
-    } else if (card.offer.rooms > 4) {
-      return 'комнат';
-    }
-    return 'комнаты';
-  };
-  // Сделал сначала через переменную с тернарным оператором, но линтер не позволяет использовать, это ошибка?
-  // const wordRoom = (card.offer.rooms > 4) ? 'комнат' : (card.offer.rooms = 1) ? 'комната' : 'комнаты';
-
-
   cardsItem.querySelector('.popup__avatar').src = card.author.avatar;
-
   cardsItem.querySelector('.popup__title').textContent = card.offer.title;
   cardsItem.querySelector('.popup__text--address').textContent = card.offer.address;
   cardsItem.querySelector('.popup__text--price').textContent = `${card.offer.price} ₽/сутки`;
   cardsItem.querySelector('.popup__type').textContent = getAccommodationType(card.offer.type);
-  cardsItem.querySelector('.popup__text--capacity').textContent = `${card.offer.rooms} ${wordRoom()} для ${card.offer.guests} гостей`;
+  cardsItem.querySelector('.popup__text--capacity').textContent = `${card.offer.rooms} ${getWordRoom(card)} для ${card.offer.guests} ${getWordGuests(card)}`;
   cardsItem.querySelector('.popup__text--time').textContent = `Заезд после ${card.offer.checkin}, выезд до ${card.offer.checkout}`;
   cardsItem.querySelector('.popup__description').textContent = (card.offer.description) ? card.offer.description : '';
   somePhotos(cardsItem, '.popup__photos', card.offer.photos);
   addFeatures(cardsItem, card.offer.features);
+  return cardsItem;
+};
 
-  mapCanvas.append(cardsItem);
+// Меняем иконку на карте
+const smallIcon = L.icon({
+  iconUrl: './img/pin.svg',
+  iconSize: [52, 52],
+  iconAnchor: [26, 52],
 });
 
-
-// Скроем все карточки, кроме первой
-const allCards = document.querySelectorAll('.popup');
-for (let i = 1; i < allCards.length; i++) {
-  allCards[i].classList.add('visually-hidden');
-}
+// Размещаем маркеры моковых карточек
+cards.forEach((card) => {
+  const marker = L.marker(
+    {
+      lat: card.location.lat,
+      lng: card.location.lng,
+    },
+    {
+      icon: smallIcon,
+    },
+  );
+  marker.addTo(map)
+    .bindPopup(createBaloon(card));
+});
