@@ -1,4 +1,5 @@
 import {mainMarker} from './create-map.js';
+import {sendData} from './fetch-data.js';
 
 // Проверка комнат и количества гостей
 const addAdvertForm = document.querySelector('.ad-form');
@@ -84,9 +85,15 @@ addAdvertForm.addEventListener('change', () => {
   pristine.validate();
 });
 
+
 addAdvertForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  const formData = new FormData(evt.target);
+  const isFormValidated = pristine.validate();
+
+  if (isFormValidated) {
+    sendData(formData);
+  }
 });
 
 // Данные в поле координат
@@ -96,4 +103,4 @@ mainMarker.on('moveend', (evt) => {
   address.value = `${coordinates.lat.toFixed(5)}, ${coordinates.lng.toFixed(5)}`;
 });
 
-export {price, type, priceOption};
+export {price, type, priceOption, addAdvertForm};

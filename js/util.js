@@ -1,3 +1,5 @@
+import {AMOUNT_USERS} from './data.js';
+
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
@@ -57,4 +59,64 @@ const getWordRoom = (card) => {
 const getWordGuests = (card) => (card.offer.guests === 1) ? 'гостя' : 'гостей';
 
 
-export {getRandomInteger, createRandomIdFromRangeGenerator, getRandomArray, getRandomPoint, getLocationPoint, getWordRoom, getWordGuests};
+const createRandomLinksId = createRandomIdFromRangeGenerator(1, AMOUNT_USERS);
+
+const getRandomLinksId = () => {
+  const currentLinksId = createRandomLinksId();
+  return (currentLinksId < AMOUNT_USERS) ? `0${currentLinksId}` : currentLinksId;
+};
+
+const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = '1000';
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.minWidth = '300px';
+  alertContainer.style.left = 'calc(50% - 150px)';
+  alertContainer.style.top = '20%';
+  alertContainer.style.right = 'calc(50% - 150px)';
+  alertContainer.style.padding = '10px 5px';
+  alertContainer.style.fontSize = '14px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, 5000);
+};
+
+const getSuccessMessage = () => {
+  const successMessage = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+  document.body.appendChild(successMessage);
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape') {
+      document.body.removeChild(successMessage);
+    }
+  });
+
+  document.addEventListener('click', () => {
+    document.body.removeChild(successMessage);
+  });
+};
+
+const getErrorMessage = () => {
+  const errorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+  document.body.appendChild(errorMessage);
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape') {
+      document.body.removeChild(errorMessage);
+    }
+  });
+
+  document.addEventListener('click', () => {
+    document.body.removeChild(errorMessage);
+  });
+};
+
+
+export {getRandomInteger, createRandomIdFromRangeGenerator, getRandomArray, getRandomPoint, getLocationPoint, getWordRoom, getWordGuests, getRandomLinksId, showAlert, getSuccessMessage, getErrorMessage};

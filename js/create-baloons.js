@@ -1,8 +1,5 @@
-import {getAdvertsList} from './create-adverts-list.js';
 import {getWordRoom, getWordGuests} from './util.js';
 import {map} from './create-map.js';
-
-const cards = getAdvertsList();
 
 // Тип жилья
 const getAccommodationType = (AccommodationType) => {
@@ -27,37 +24,38 @@ const somePhotos = (cardsItem, listClass, arrayPhotos) => {
   const listPhotos = cardsItem.querySelector(listClass);
   listPhotos.querySelector('img').src = arrayPhotos[0];
 
-  for (let i = 1; i < arrayPhotos.length; i++) {
-    const theImage = listPhotos.querySelector('img').cloneNode(true);
-    theImage.src = arrayPhotos[i];
-    listPhotos.appendChild(theImage);
+  if (arrayPhotos.length > 1) {
+    for (let i = 1; i < arrayPhotos.length; i++) {
+      const theImage = listPhotos.querySelector('img').cloneNode(true);
+      theImage.src = arrayPhotos[i];
+      listPhotos.appendChild(theImage);
+    }
   }
 };
 
 
-// Функция для добавления характеристик жилья
+// // Функция для добавления характеристик жилья
 const addFeatures = (cardsItem, featuresArray) => {
 
   const featuresContainer = cardsItem.querySelector('.popup__features');
   const featuresList = featuresContainer.querySelectorAll('.popup__feature');
 
-  featuresList.forEach((featureItem) => {
-    const isNecessary = featuresArray.some(
-      (feature) => featureItem.classList.contains(`popup__feature--${feature}`),
-    );
+  if (featuresArray) {
+    featuresList.forEach((featureItem) => {
+      const isNecessary = featuresArray.some(
+        (feature) => featureItem.classList.contains(`popup__feature--${feature}`),
+      );
 
-    if (!isNecessary) {
-      featureItem.remove();
-    }
-  });
+      if (!isNecessary) {
+        featureItem.remove();
+      }
+    });
+  }
 };
 
 // Функция для формирования попапа для маркеров карты
-const createBaloon = (card) => {
-  const cardTemplate = document.querySelector('#card')
-    .content
-    .querySelector('.popup');
-
+const cardsList = (card) => {
+  const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
   const cardsItem = cardTemplate.cloneNode(true);
 
   cardsItem.querySelector('.popup__avatar').src = card.author.avatar;
@@ -73,6 +71,7 @@ const createBaloon = (card) => {
   return cardsItem;
 };
 
+
 // Меняем иконку на карте
 const smallIcon = L.icon({
   iconUrl: './img/pin.svg',
@@ -80,17 +79,22 @@ const smallIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
-// Размещаем маркеры моковых карточек
-cards.forEach((card) => {
-  const marker = L.marker(
-    {
-      lat: card.location.lat,
-      lng: card.location.lng,
-    },
-    {
-      icon: smallIcon,
-    },
-  );
-  marker.addTo(map)
-    .bindPopup(createBaloon(card));
-});
+
+// Размещаем маркеры карточек
+const baloons = (cards) => {
+  cards.forEach((element) => {
+    const marker = L.marker(
+      {
+        lat: element.location.lat,
+        lng: element.location.lng,
+      },
+      {
+        icon: smallIcon,
+      },
+    );
+    marker.addTo(map)
+      .bindPopup(cardsList(element));
+  });
+};
+
+export {baloons};
