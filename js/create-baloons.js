@@ -20,16 +20,19 @@ const getAccommodationType = (AccommodationType) => {
 };
 
 // Функция для добавления фото
-const somePhotos = (cardsItem, listClass, arrayPhotos) => {
-  const listPhotos = cardsItem.querySelector(listClass);
-  listPhotos.querySelector('img').src = arrayPhotos[0];
+const createImages = (parentItem, imageListClass, arrayPhotos) => {
+  const listImages = parentItem.querySelector(imageListClass);
+  const imageElement = listImages.querySelector('img');
+  imageElement.src = arrayPhotos[0];
 
   if (arrayPhotos.length > 1) {
     for (let i = 1; i < arrayPhotos.length; i++) {
-      const theImage = listPhotos.querySelector('img').cloneNode(true);
-      theImage.src = arrayPhotos[i];
-      listPhotos.appendChild(theImage);
+      const addImageElement = imageElement.cloneNode(true);
+      addImageElement.src = arrayPhotos[i];
+      listImages.appendChild(addImageElement);
     }
+  } else if (arrayPhotos.length === 0) {
+    listImages.remove();
   }
 };
 
@@ -45,7 +48,6 @@ const addFeatures = (cardsItem, featuresArray) => {
       const isNecessary = featuresArray.some(
         (feature) => featureItem.classList.contains(`popup__feature--${feature}`),
       );
-
       if (!isNecessary) {
         featureItem.remove();
       }
@@ -54,7 +56,7 @@ const addFeatures = (cardsItem, featuresArray) => {
 };
 
 // Функция для формирования попапа для маркеров карты
-const cardsList = (card) => {
+const createCardsList = (card) => {
   const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
   const cardsItem = cardTemplate.cloneNode(true);
 
@@ -66,7 +68,7 @@ const cardsList = (card) => {
   cardsItem.querySelector('.popup__text--capacity').textContent = `${card.offer.rooms} ${getWordRoom(card)} для ${card.offer.guests} ${getWordGuests(card)}`;
   cardsItem.querySelector('.popup__text--time').textContent = `Заезд после ${card.offer.checkin}, выезд до ${card.offer.checkout}`;
   cardsItem.querySelector('.popup__description').textContent = (card.offer.description) ? card.offer.description : '';
-  somePhotos(cardsItem, '.popup__photos', card.offer.photos);
+  createImages(cardsItem, '.popup__photos', card.offer.photos);
   addFeatures(cardsItem, card.offer.features);
   return cardsItem;
 };
@@ -81,7 +83,7 @@ const smallIcon = L.icon({
 
 
 // Размещаем маркеры карточек
-const baloons = (cards) => {
+const createBaloons = (cards) => {
   cards.forEach((element) => {
     const marker = L.marker(
       {
@@ -93,8 +95,8 @@ const baloons = (cards) => {
       },
     );
     marker.addTo(map)
-      .bindPopup(cardsList(element));
+      .bindPopup(createCardsList(element));
   });
 };
 
-export {baloons};
+export {createBaloons};
