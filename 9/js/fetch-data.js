@@ -1,28 +1,34 @@
 import {getFormActivated} from './form-activity.js';
 import {showAlert, getSuccessMessage, getErrorMessage} from './util.js';
 import {AMOUNT_USERS} from './data.js';
-import {baloons} from './create-baloons.js';
+import {createBaloons} from './create-baloons.js';
 import {addAdvertForm} from './form-validator.js';
 
+const BASE_URL = 'https://28.javascript.htmlacademy.pro/keksobooking';
+const Route = {
+  GET_DATA: '/data',
+  SEND_DATA: '/',
+};
+
 const getData = (classForm, onSuccess) => {
-  fetch('https://28.javascript.htmlacademy.pro/keksobooking/data')
+  fetch(`${BASE_URL}${Route.GET_DATA}`)
     .then((response) => {
       if (response.ok) {
         getFormActivated(classForm);
         return response.json();
       } else {
-        throw new Error(`${response.status}`);
+        throw new Error();
       }
     })
     .then((data) => {
       onSuccess(data.slice(0, AMOUNT_USERS));
     })
-    .catch((error) => showAlert(`Не удалось загрузить данные с сервера. ${error}. Попробуйте обновить страницу`));
+    .catch(() => showAlert('Не удалось загрузить все данные с сервера. Попробуйте обновить страницу'));
 };
 
 const sendData = (formBody) => {
   fetch(
-    'https://28.javascript.htmlacadem.pro/keksobooking',
+    `${BASE_URL}${Route.SEND_DATA}`,
     {
       method: 'POST',
       body: formBody
@@ -35,10 +41,10 @@ const sendData = (formBody) => {
         addAdvertForm.reset();
       }
     })
-    .catch((error) => getErrorMessage(error));
+    .catch(() => getErrorMessage());
 };
 
-getData('map__filters', baloons);
+getData('map__filters', createBaloons);
 
 
 export {sendData};
