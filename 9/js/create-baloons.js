@@ -27,9 +27,9 @@ const createImages = (parentItem, imageListClass, arrayPhotos) => {
 
   if (arrayPhotos.length > 1) {
     for (let i = 1; i < arrayPhotos.length; i++) {
-      const addImageElement = imageElement.cloneNode(true);
-      addImageElement.src = arrayPhotos[i];
-      listImages.appendChild(addImageElement);
+      const additionalImageElement = imageElement.cloneNode(true);
+      additionalImageElement.src = arrayPhotos[i];
+      listImages.appendChild(additionalImageElement);
     }
   } else if (arrayPhotos.length === 0) {
     listImages.remove();
@@ -56,21 +56,21 @@ const addFeatures = (cardsItem, featuresArray) => {
 };
 
 // Функция для формирования попапа для маркеров карты
-const createCardsList = (card) => {
-  const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-  const cardsItem = cardTemplate.cloneNode(true);
+const createPopup = (card) => {
+  const popupTemplate = document.querySelector('#card').content.querySelector('.popup');
+  const popupItem = popupTemplate.cloneNode(true);
 
-  cardsItem.querySelector('.popup__avatar').src = card.author.avatar;
-  cardsItem.querySelector('.popup__title').textContent = card.offer.title;
-  cardsItem.querySelector('.popup__text--address').textContent = card.offer.address;
-  cardsItem.querySelector('.popup__text--price').textContent = `${card.offer.price} ₽/сутки`;
-  cardsItem.querySelector('.popup__type').textContent = getAccommodationType(card.offer.type);
-  cardsItem.querySelector('.popup__text--capacity').textContent = `${card.offer.rooms} ${getWordRoom(card)} для ${card.offer.guests} ${getWordGuests(card)}`;
-  cardsItem.querySelector('.popup__text--time').textContent = `Заезд после ${card.offer.checkin}, выезд до ${card.offer.checkout}`;
-  cardsItem.querySelector('.popup__description').textContent = (card.offer.description) ? card.offer.description : '';
-  createImages(cardsItem, '.popup__photos', card.offer.photos);
-  addFeatures(cardsItem, card.offer.features);
-  return cardsItem;
+  popupItem.querySelector('.popup__avatar').src = card.author.avatar;
+  popupItem.querySelector('.popup__title').textContent = card.offer.title;
+  popupItem.querySelector('.popup__text--address').textContent = card.offer.address;
+  popupItem.querySelector('.popup__text--price').textContent = `${card.offer.price} ₽/сутки`;
+  popupItem.querySelector('.popup__type').textContent = getAccommodationType(card.offer.type);
+  popupItem.querySelector('.popup__text--capacity').textContent = `${card.offer.rooms} ${getWordRoom(card)} для ${card.offer.guests} ${getWordGuests(card)}`;
+  popupItem.querySelector('.popup__text--time').textContent = `Заезд после ${card.offer.checkin}, выезд до ${card.offer.checkout}`;
+  popupItem.querySelector('.popup__description').textContent = (card.offer.description) ? card.offer.description : '';
+  createImages(popupItem, '.popup__photos', card.offer.photos);
+  addFeatures(popupItem, card.offer.features);
+  return popupItem;
 };
 
 
@@ -95,7 +95,7 @@ const createBaloons = (cards) => {
       },
     );
     marker.addTo(map)
-      .bindPopup(createCardsList(element));
+      .bindPopup(createPopup(element));
   });
 };
 
