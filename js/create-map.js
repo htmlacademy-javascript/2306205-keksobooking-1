@@ -2,7 +2,6 @@ import {getFormActivated} from './form-activity.js';
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    getFormActivated('map__filters');
     getFormActivated('ad-form');
   })
   .setView({
