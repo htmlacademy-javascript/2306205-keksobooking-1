@@ -1,8 +1,7 @@
 import {getFormActivated} from './form-activity.js';
 import {showAlert, getSuccessMessage, getErrorMessage} from './util.js';
-import {AMOUNT_USERS} from './data.js';
-import {createBaloons} from './create-baloons.js';
 import {addAdvertForm} from './form-validator.js';
+
 
 const BASE_URL = 'https://28.javascript.htmlacademy.pro/keksobooking';
 const Route = {
@@ -10,22 +9,23 @@ const Route = {
   SEND_DATA: '/',
 };
 
-const getData = (classForm, onSuccess) => {
+// Получение данных
+const getData = (cb) => {
   fetch(`${BASE_URL}${Route.GET_DATA}`)
     .then((response) => {
       if (response.ok) {
-        getFormActivated(classForm);
+        getFormActivated('map__filters');
         return response.json();
       } else {
         throw new Error();
       }
     })
-    .then((data) => {
-      onSuccess(data.slice(0, AMOUNT_USERS));
-    })
+    .then(cb)
     .catch(() => showAlert('Не удалось загрузить все данные с сервера. Попробуйте обновить страницу'));
 };
 
+
+// Отправка данных
 const sendData = (formBody) => {
   fetch(
     `${BASE_URL}${Route.SEND_DATA}`,
@@ -44,7 +44,4 @@ const sendData = (formBody) => {
     .catch(() => getErrorMessage());
 };
 
-getData('map__filters', createBaloons);
-
-
-export {sendData};
+export {sendData, getData};

@@ -1,10 +1,36 @@
 const AMOUNT_USERS = 10;
 
-const typesAccommodation = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
-const checkTimes = ['12:00', '13:00', '14:00'];
-const facilities = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const photoLinks = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
+// Тип жилья
+const getAccommodationType = (AccommodationType) => {
+  switch (AccommodationType) {
+    case 'palace':
+      return 'Дворец';
+    case 'flat':
+      return 'Квартира';
+    case 'house':
+      return 'Дом';
+    case 'bungalow':
+      return 'Бунгало';
+    case 'hotel':
+      return 'Отель';
+    default:
+      return 'Уточнить у владельца';
+  }
+};
 
-export {AMOUNT_USERS, typesAccommodation, checkTimes, facilities, photoLinks};
+const roomsOption = {
+  '100': '0',
+  '1': '1',
+  '2': ['1', '2'],
+  '3': ['1', '2', '3'],
+};
+
+const priceOption = {
+  'bungalow': '0',
+  'flat': '1000',
+  'hotel': '3000',
+  'house': '5000',
+  'palace': '10000',
+};
+
+export {AMOUNT_USERS, roomsOption, priceOption, getAccommodationType};

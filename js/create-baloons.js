@@ -1,37 +1,22 @@
 import {getWordRoom, getWordGuests} from './util.js';
 import {map} from './create-map.js';
-
-// Тип жилья
-const getAccommodationType = (AccommodationType) => {
-  switch (AccommodationType) {
-    case 'palace':
-      return 'Дворец';
-    case 'flat':
-      return 'Квартира';
-    case 'house':
-      return 'Дом';
-    case 'bungalow':
-      return 'Бунгало';
-    case 'hotel':
-      return 'Отель';
-    default:
-      return 'Уточнить у владельца';
-  }
-};
+import {getAccommodationType, AMOUNT_USERS} from './data.js';
+import {filterTypes, filterRooms, filterGuests, filterPrice, filterfeatures} from './filters.js';
 
 // Функция для добавления фото
 const createImages = (parentItem, imageListClass, arrayPhotos) => {
+
   const listImages = parentItem.querySelector(imageListClass);
   const imageElement = listImages.querySelector('img');
-  imageElement.src = arrayPhotos[0];
 
-  if (arrayPhotos.length > 1) {
+  if (arrayPhotos) {
+    imageElement.src = arrayPhotos[0];
     for (let i = 1; i < arrayPhotos.length; i++) {
       const additionalImageElement = imageElement.cloneNode(true);
       additionalImageElement.src = arrayPhotos[i];
       listImages.appendChild(additionalImageElement);
     }
-  } else if (arrayPhotos.length === 0) {
+  } else {
     listImages.remove();
   }
 };
@@ -39,11 +24,10 @@ const createImages = (parentItem, imageListClass, arrayPhotos) => {
 
 // // Функция для добавления характеристик жилья
 const addFeatures = (cardsItem, featuresArray) => {
-
-  const featuresContainer = cardsItem.querySelector('.popup__features');
-  const featuresList = featuresContainer.querySelectorAll('.popup__feature');
-
   if (featuresArray) {
+    const featuresContainer = cardsItem.querySelector('.popup__features');
+    const featuresList = featuresContainer.querySelectorAll('.popup__feature');
+
     featuresList.forEach((featureItem) => {
       const isNecessary = featuresArray.some(
         (feature) => featureItem.classList.contains(`popup__feature--${feature}`),
@@ -81,22 +65,32 @@ const smallIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
+const removeBaloons = () => {
+  document.querySelectorAll('[src="./img/pin.svg"]').forEach((marker) => marker.remove());
+};
 
 // Размещаем маркеры карточек
 const createBaloons = (cards) => {
-  cards.forEach((element) => {
-    const marker = L.marker(
-      {
-        lat: element.location.lat,
-        lng: element.location.lng,
-      },
-      {
-        icon: smallIcon,
-      },
-    );
-    marker.addTo(map)
-      .bindPopup(createPopup(element));
-  });
+  cards
+    .filter(filterTypes)
+    .filter(filterRooms)
+    .filter(filterGuests)
+    .filter(filterPrice)
+    .filter(filterfeatures)
+    .slice(0, AMOUNT_USERS)
+    .forEach((element) => {
+      const marker = L.marker(
+        {
+          lat: element.location.lat,
+          lng: element.location.lng,
+        },
+        {
+          icon: smallIcon,
+        },
+      );
+      marker.addTo(map)
+        .bindPopup(createPopup(element));
+    });
 };
 
-export {createBaloons};
+export {createBaloons, removeBaloons};
