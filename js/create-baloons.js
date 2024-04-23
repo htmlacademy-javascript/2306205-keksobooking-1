@@ -1,7 +1,7 @@
 import {getWordRoom, getWordGuests} from './util.js';
 import {map} from './create-map.js';
 import {getAccommodationType, AMOUNT_USERS} from './data.js';
-import {filterTypes, filterRooms, filterGuests, filterPrice, filterfeatures} from './filters.js';
+import {filterTypes, filterRooms, filterGuests, filterPrice, checkFeatures} from './filters.js';
 
 // Функция для добавления фото
 const createImages = (parentItem, imageListClass, arrayPhotos) => {
@@ -72,12 +72,8 @@ const removeBaloons = () => {
 // Размещаем маркеры карточек
 const createBaloons = (cards) => {
   cards
-    .filter(filterTypes)
-    .filter(filterRooms)
-    .filter(filterGuests)
-    .filter(filterPrice)
-    .filter(filterfeatures)
-    .slice(0, AMOUNT_USERS)
+    .filter((offer) => filterTypes(offer) && filterRooms(offer) && filterGuests(offer) && filterPrice(offer) && checkFeatures(offer))
+    // .slice(0, AMOUNT_USERS)
     .forEach((element) => {
       const marker = L.marker(
         {
