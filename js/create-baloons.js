@@ -73,7 +73,7 @@ const removeBaloons = () => {
 const createBaloons = (cards) => {
   cards
     .filter((offer) => filterTypes(offer) && filterRooms(offer) && filterGuests(offer) && filterPrice(offer) && checkFeatures(offer))
-    // .slice(0, AMOUNT_USERS)
+    .slice(0, AMOUNT_USERS)
     .forEach((element) => {
       const marker = L.marker(
         {

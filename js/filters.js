@@ -53,40 +53,16 @@ const filterGuests = (element) => {
 
 const checkboxes = document.querySelectorAll('.map__checkbox');
 
-// const checkWifi = document.querySelector('#filter-wifi');
-// const checkDishwasher = document.querySelector('#filter-dishwasher');
-// const checkParking = document.querySelector('#filter-parking');
-// const checkWasher = document.querySelector('#filter-washer');
-// const checkElevator = document.querySelector('#filter-elevator');
-// const checkConditioner = document.querySelector('#filter-conditioner');
 
-// Array.from(checkboxes).every((checkbox) => {
-//   if (checkbox.checked) {
-//     return [element.offer.features].includes('wifi');
-//   } else if (checkDishwasher.checked) {
-//     return [element.offer.features].includes('dishwasher');
-//   } else if (checkParking.checked) {
-//     return [element.offer.features].includes('parking');
-//   } else if (checkWasher.checked) {
-//     return [element.offer.features].includes('washer');
-//   } else if (checkElevator.checked) {
-//     return [element.offer.features].includes('elevator');
-//   } else if (checkConditioner.checked) {
-//     return [element.offer.features].includes('conditioner');
-//   }
-// });
-
-const checkFeatures = (element) => {
-  Array.from(checkboxes).forEach((checkbox) => {
-    if (checkbox.checked) {
-      if (element.offer.features) {
-        console.log(element.offer.features.includes(checkbox.value));
-      }
-    } else {
-      return true;
+const checkFeatures = (element) => Array.from(checkboxes).every((checkbox) => {
+  if (checkbox.checked) {
+    if (element.offer.features) {
+      return element.offer.features.includes(checkbox.value);
     }
-  });
-};
+  } else {
+    return true;
+  }
+});
 
 export {filterTypes, filterRooms, filterGuests, filterPrice, checkFeatures, setFilterFormChangeHandler};
 
