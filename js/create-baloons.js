@@ -65,9 +65,12 @@ const smallIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
+const markerGroup = L.layerGroup().addTo(map);
+
 const removeBaloons = () => {
-  document.querySelectorAll('[src="./img/pin.svg"]').forEach((marker) => marker.remove());
+  markerGroup.clearLayers();
 };
+
 
 // Размещаем маркеры карточек
 const createBaloons = (cards) => {
@@ -84,7 +87,7 @@ const createBaloons = (cards) => {
           icon: smallIcon,
         },
       );
-      marker.addTo(map)
+      marker.addTo(markerGroup)
         .bindPopup(createPopup(element));
     });
 };

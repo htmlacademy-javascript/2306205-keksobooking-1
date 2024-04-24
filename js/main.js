@@ -7,8 +7,10 @@ import './create-slider.js';
 import {getData} from './fetch-data.js';
 import {setFilterFormChangeHandler} from './filters.js';
 import {createBaloons} from './create-baloons.js';
+import {debounce} from './util.js';
+
 
 getData((data) => {
   createBaloons(data);
-  setFilterFormChangeHandler(data);
+  debounce(setFilterFormChangeHandler(data), 500);
 });
