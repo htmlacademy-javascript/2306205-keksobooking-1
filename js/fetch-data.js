@@ -1,7 +1,5 @@
 import {getFormActivated} from './form-activity.js';
 import {showAlert, getSuccessMessage, getErrorMessage} from './util.js';
-import {addAdvertForm} from './form-validator.js';
-
 
 const BASE_URL = 'https://28.javascript.htmlacademy.pro/keksobooking';
 const Route = {
@@ -38,7 +36,6 @@ const sendData = (formBody) => {
         throw new Error;
       } else {
         getSuccessMessage();
-        addAdvertForm.reset();
       }
     })
     .catch(() => getErrorMessage());

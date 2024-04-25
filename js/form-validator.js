@@ -1,7 +1,8 @@
 import {mainMarker} from './create-map.js';
 import {sendData} from './fetch-data.js';
 import {roomsOption, priceOption} from './data.js';
-
+import {removeAdvertImages} from './load-photo.js';
+import {map} from './create-map.js';
 
 // Проверка комнат и количества гостей
 const addAdvertForm = document.querySelector('.ad-form');
@@ -74,16 +75,6 @@ addAdvertForm.addEventListener('change', () => {
 });
 
 
-addAdvertForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const formData = new FormData(evt.target);
-  const isFormValidated = pristine.validate();
-
-  if (isFormValidated) {
-    sendData(formData);
-  }
-});
-
 // Данные в поле координат
 const address = addAdvertForm.querySelector('#address');
 const initialLatLng = mainMarker.getLatLng();
@@ -91,6 +82,31 @@ address.value = `${initialLatLng.lat.toFixed(5)}, ${initialLatLng.lng.toFixed(5)
 mainMarker.on('moveend', (evt) => {
   const newLatLng = evt.target.getLatLng();
   address.value = `${newLatLng.lat.toFixed(5)}, ${newLatLng.lng.toFixed(5)}`;
+});
+
+
+// Функция очистки формы
+const resetForm = () => {
+  map.setView({
+    lat: 35.6895,
+    lng: 139.69171,
+  }, 12);
+  addAdvertForm.reset();
+  removeAdvertImages();
+};
+
+
+addAdvertForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const formData = new FormData(evt.target);
+  const isFormValidated = pristine.validate();
+
+  if (isFormValidated) {
+    sendData(formData);
+    setTimeout(() => {
+      resetForm();
+    }, 1500);
+  }
 });
 
 export {price, type, priceOption, addAdvertForm};
