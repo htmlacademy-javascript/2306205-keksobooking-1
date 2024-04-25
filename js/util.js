@@ -63,5 +63,13 @@ const getErrorMessage = () => {
   });
 };
 
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
 
-export {getWordRoom, getWordGuests, showAlert, getSuccessMessage, getErrorMessage};
+
+export {getWordRoom, getWordGuests, showAlert, getSuccessMessage, getErrorMessage, debounce};

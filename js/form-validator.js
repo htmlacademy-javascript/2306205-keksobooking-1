@@ -1,5 +1,7 @@
 import {mainMarker} from './create-map.js';
 import {sendData} from './fetch-data.js';
+import {roomsOption, priceOption} from './data.js';
+
 
 // Проверка комнат и количества гостей
 const addAdvertForm = document.querySelector('.ad-form');
@@ -12,13 +14,6 @@ const pristine = new Pristine(addAdvertForm, {
   errorTextParent: 'ad-form__element',
   errorClass: 'ad-form__element--invalid'
 });
-
-const roomsOption = {
-  '100': '0',
-  '1': '1',
-  '2': ['1', '2'],
-  '3': ['1', '2', '3'],
-};
 
 
 function validateGuests () {
@@ -41,13 +36,6 @@ pristine.addValidator(rooms, validateGuests, getErrorGuestsMessage);
 const price = addAdvertForm.querySelector('#price');
 const type = addAdvertForm.querySelector('#type');
 
-const priceOption = {
-  'bungalow': '0',
-  'flat': '1000',
-  'hotel': '3000',
-  'house': '5000',
-  'palace': '10000',
-};
 
 price.addEventListener('focus', () => {
   price.min = priceOption[type.value];
