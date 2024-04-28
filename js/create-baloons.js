@@ -65,14 +65,9 @@ const smallIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
-const markerGroup = L.layerGroup().addTo(map);
-
-const removeBaloons = () => {
-  markerGroup.clearLayers();
-};
-
 
 // Размещаем маркеры карточек
+const markerGroup = L.layerGroup().addTo(map);
 const createBaloons = (cards) => {
   cards
     .filter((offer) => filterTypes(offer) && filterRooms(offer) && filterGuests(offer) && filterPrice(offer) && checkFeatures(offer))
@@ -91,5 +86,11 @@ const createBaloons = (cards) => {
         .bindPopup(createPopup(element));
     });
 };
+
+// Очищаем слой карточек
+const removeBaloons = () => {
+  markerGroup.clearLayers();
+};
+
 
 export {createBaloons, removeBaloons};

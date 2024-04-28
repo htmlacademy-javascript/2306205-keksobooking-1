@@ -34,6 +34,7 @@ imageFileChooser.addEventListener('change', () => {
 const removeAdvertImages = () => {
   while (imagePreview.firstChild) {
     imagePreview.removeChild(imagePreview.firstChild);
+    avatarPreview.src = 'img/muffin-grey.svg';
   }
 };
 
