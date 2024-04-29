@@ -1,8 +1,6 @@
-import {price} from './form-validator.js';
+import {price, priceSliderField} from './form-validator.js';
 
-const priceSlider = document.querySelector('.ad-form__slider');
-
-noUiSlider.create(priceSlider, {
+noUiSlider.create(priceSliderField, {
   range: {
     min: 0,
     max: 100000,
@@ -21,10 +19,14 @@ noUiSlider.create(priceSlider, {
   }
 });
 
-priceSlider.noUiSlider.on('slide', () => {
-  price.value = priceSlider.noUiSlider.get();
+priceSliderField.noUiSlider.on('slide', () => {
+  price.value = priceSliderField.noUiSlider.get();
 });
 
 price.addEventListener('input', () => {
-  priceSlider.noUiSlider.set(price.value);
+  priceSliderField.noUiSlider.set(price.value);
+
+  if (price.value === '') {
+    priceSliderField.noUiSlider.reset();
+  }
 });
