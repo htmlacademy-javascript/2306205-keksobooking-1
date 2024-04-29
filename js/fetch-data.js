@@ -24,7 +24,7 @@ const getData = (cb) => {
 
 
 // Отправка данных
-const sendData = (formBody) => {
+const sendData = (formBody, clearForm) => {
   fetch(
     `${BASE_URL}${Route.SEND_DATA}`,
     {
@@ -36,6 +36,7 @@ const sendData = (formBody) => {
         throw new Error;
       } else {
         getSuccessMessage();
+        clearForm();
       }
     })
     .catch(() => getErrorMessage());
