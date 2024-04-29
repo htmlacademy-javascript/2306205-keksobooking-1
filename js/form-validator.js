@@ -11,6 +11,7 @@ const price = addAdvertForm.querySelector('#price');
 const type = addAdvertForm.querySelector('#type');
 const timein = addAdvertForm.querySelector('#timein');
 const timeout = addAdvertForm.querySelector('#timeout');
+const buttonResetForm = addAdvertForm.querySelector('.ad-form__reset');
 
 
 // Проверка комнат и количества гостей
@@ -95,6 +96,7 @@ const resetForm = () => {
   addAdvertForm.reset();
   removeAdvertImages();
   address.value = `${initialLatLng.lat}, ${initialLatLng.lng}`;
+  price.placeholder = '1000';
   priceSliderField.noUiSlider.reset();
 };
 
@@ -111,7 +113,7 @@ addAdvertForm.addEventListener('submit', (evt) => {
 });
 
 // Функция сброса формы
-addAdvertForm.addEventListener('reset', (evt) => {
+buttonResetForm.addEventListener('click', (evt) => {
   evt.preventDefault();
   resetForm();
 });
