@@ -9,10 +9,9 @@ const rooms = addAdvertForm.querySelector('#room_number');
 const guests = addAdvertForm.querySelector('#capacity');
 const price = addAdvertForm.querySelector('#price');
 const type = addAdvertForm.querySelector('#type');
-const title = addAdvertForm.querySelector('#title');
 const timein = addAdvertForm.querySelector('#timein');
 const timeout = addAdvertForm.querySelector('#timeout');
-const description = addAdvertForm.querySelector('#description');
+const buttonResetForm = addAdvertForm.querySelector('.ad-form__reset');
 
 
 // Проверка комнат и количества гостей
@@ -94,24 +93,10 @@ const resetForm = () => {
     lat: 35.6895,
     lng: 139.69171,
   });
-
+  addAdvertForm.reset();
   removeAdvertImages();
-
-  price.value = '';
-  price.placeholder = '1000';
-  title.value = '';
-  description.value = '';
   address.value = `${initialLatLng.lat}, ${initialLatLng.lng}`;
-  type.value = 'flat';
-  rooms.value = '1';
-  guests.value = '1';
-  timein.value = '12:00';
-  timeout.value = '12:00';
-
-  const checkboxes = addAdvertForm.querySelectorAll('[type="checkbox"]');
-  Array.from(checkboxes).forEach((checkbox) => {
-    checkbox.checked = false;
-  });
+  price.placeholder = '1000';
   priceSliderField.noUiSlider.reset();
 };
 
@@ -123,13 +108,12 @@ addAdvertForm.addEventListener('submit', (evt) => {
   const isFormValidated = pristine.validate();
 
   if (isFormValidated) {
-    sendData(formData);
-    resetForm();
+    sendData(formData, resetForm);
   }
 });
 
 // Функция сброса формы
-addAdvertForm.addEventListener('reset', (evt) => {
+buttonResetForm.addEventListener('click', (evt) => {
   evt.preventDefault();
   resetForm();
 });
