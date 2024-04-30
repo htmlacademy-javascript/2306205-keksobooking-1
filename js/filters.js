@@ -1,4 +1,5 @@
 import {createBaloons, removeBaloons} from './create-baloons.js';
+import {debounce} from './util.js';
 
 const mainFilter = document.querySelector('.map__filters');
 const priceField = document.querySelector('#housing-price');
@@ -8,10 +9,10 @@ const guestsField = document.querySelector('#housing-guests');
 
 
 const setFilterFormChangeHandler = (data) => {
-  mainFilter.addEventListener('change', () => {
+  mainFilter.addEventListener('change', debounce(() => {
     removeBaloons();
     createBaloons(data);
-  });
+  }));
 };
 
 

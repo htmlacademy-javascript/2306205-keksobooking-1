@@ -1,20 +1,25 @@
-import {mainMarker} from './create-map.js';
+import {map, mainMarker} from './create-map.js';
 import {sendData} from './fetch-data.js';
 import {roomsOption, priceOption} from './data.js';
+import {removeAdvertImages} from './load-photo.js';
 
-
-// Проверка комнат и количества гостей
+const priceSliderField = document.querySelector('.ad-form__slider');
 const addAdvertForm = document.querySelector('.ad-form');
 const rooms = addAdvertForm.querySelector('#room_number');
 const guests = addAdvertForm.querySelector('#capacity');
+const price = addAdvertForm.querySelector('#price');
+const type = addAdvertForm.querySelector('#type');
+const timein = addAdvertForm.querySelector('#timein');
+const timeout = addAdvertForm.querySelector('#timeout');
+const buttonResetForm = addAdvertForm.querySelector('.ad-form__reset');
 
 
+// Проверка комнат и количества гостей
 const pristine = new Pristine(addAdvertForm, {
   classTo: 'ad-form__element',
   errorTextParent: 'ad-form__element',
   errorClass: 'ad-form__element--invalid'
 });
-
 
 function validateGuests () {
   return roomsOption[rooms.value].includes(guests.value);
@@ -33,10 +38,6 @@ function getErrorGuestsMessage () {
 pristine.addValidator(rooms, validateGuests, getErrorGuestsMessage);
 
 // Изменение минимального значения и плейсхолдера цены в зависимости от типа жилья
-const price = addAdvertForm.querySelector('#price');
-const type = addAdvertForm.querySelector('#type');
-
-
 price.addEventListener('focus', () => {
   price.min = priceOption[type.value];
 });
@@ -56,9 +57,6 @@ function getErrorPriceMessage () {
 pristine.addValidator(price, validatePrice, getErrorPriceMessage);
 
 // Связывание полей заезда и выезда
-const timein = addAdvertForm.querySelector('#timein');
-const timeout = addAdvertForm.querySelector('#timeout');
-
 timein.addEventListener('change', () => {
   timeout.value = timein.value;
 });
@@ -74,23 +72,51 @@ addAdvertForm.addEventListener('change', () => {
 });
 
 
+// Данные в поле координат
+const address = addAdvertForm.querySelector('#address');
+const initialLatLng = mainMarker.getLatLng();
+address.value = `${initialLatLng.lat}, ${initialLatLng.lng}`;
+
+mainMarker.on('moveend', (evt) => {
+  const newLatLng = evt.target.getLatLng();
+  address.value = `${newLatLng.lat.toFixed(5)}, ${newLatLng.lng.toFixed(5)}`;
+});
+
+
+// Функция очистки формы
+const resetForm = () => {
+  map.setView({
+    lat: 35.6895,
+    lng: 139.69171,
+  }, 12);
+  mainMarker.setLatLng({
+    lat: 35.6895,
+    lng: 139.69171,
+  });
+  addAdvertForm.reset();
+  removeAdvertImages();
+  address.value = `${initialLatLng.lat}, ${initialLatLng.lng}`;
+  price.placeholder = '1000';
+  priceSliderField.noUiSlider.reset();
+};
+
+
+// Функция отправки формы
 addAdvertForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const formData = new FormData(evt.target);
   const isFormValidated = pristine.validate();
 
   if (isFormValidated) {
-    sendData(formData);
+    sendData(formData, resetForm);
   }
 });
 
-// Данные в поле координат
-const address = addAdvertForm.querySelector('#address');
-const initialLatLng = mainMarker.getLatLng();
-address.value = `${initialLatLng.lat.toFixed(5)}, ${initialLatLng.lng.toFixed(5)}`;
-mainMarker.on('moveend', (evt) => {
-  const newLatLng = evt.target.getLatLng();
-  address.value = `${newLatLng.lat.toFixed(5)}, ${newLatLng.lng.toFixed(5)}`;
+// Функция сброса формы
+buttonResetForm.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetForm();
 });
 
-export {price, type, priceOption, addAdvertForm};
+
+export {price, type, priceOption, addAdvertForm, priceSliderField};

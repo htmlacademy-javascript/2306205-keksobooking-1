@@ -16,6 +16,7 @@ L.tileLayer(
   },
 ).addTo(map);
 
+
 const mainIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
   iconSize: [52, 52],
@@ -33,5 +34,4 @@ const mainMarker = L.marker(
   },
 ).addTo(map);
 
-export {mainMarker};
-export {map};
+export {mainMarker, map};
