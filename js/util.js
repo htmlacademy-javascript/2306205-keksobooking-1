@@ -41,11 +41,11 @@ const getSuccessMessage = () => {
     if (evt.key === 'Escape') {
       document.body.removeChild(successMessage);
     }
-  });
+  }, { once: true });
 
   document.addEventListener('click', () => {
     document.body.removeChild(successMessage);
-  });
+  }, { once: true });
 };
 
 const getErrorMessage = () => {

@@ -68,6 +68,7 @@ const smallIcon = L.icon({
 
 // Размещаем маркеры карточек
 const markerGroup = L.layerGroup().addTo(map);
+
 const createBaloons = (cards) => {
   cards
     .filter((offer) => filterTypes(offer) && filterRooms(offer) && filterGuests(offer) && filterPrice(offer) && checkFeatures(offer))
