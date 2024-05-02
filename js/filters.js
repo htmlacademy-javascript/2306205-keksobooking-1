@@ -7,14 +7,12 @@ const typesField = document.querySelector('#housing-type');
 const roomsField = document.querySelector('#housing-rooms');
 const guestsField = document.querySelector('#housing-guests');
 
-
 const setFilterFormChangeHandler = (data) => {
   mainFilter.addEventListener('change', debounce(() => {
     removeBaloons();
     createBaloons(data);
   }));
 };
-
 
 const filterPrice = (element) => {
   if (priceField.value === 'any') {
