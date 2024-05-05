@@ -44,7 +44,7 @@ const getSuccessMessage = () => {
     document.body.removeChild(successMessage);
     document.removeEventListener('keydown', handleEscapePress);
     document.removeEventListener('click', handleMouseClick);
-  };
+  }
 
   function handleEscapePress (evt) {
     if (evt.key === 'Escape') {
