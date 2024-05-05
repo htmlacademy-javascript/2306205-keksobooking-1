@@ -38,10 +38,13 @@ function getErrorGuestsMessage () {
 pristine.addValidator(rooms, validateGuests, getErrorGuestsMessage);
 
 // Изменение минимального значения и плейсхолдера цены в зависимости от типа жилья
+price.min = priceOption['flat'];
+
 type.addEventListener('change', () => {
   price.placeholder = priceOption[type.value];
   price.min = priceOption[type.value];
 });
+
 
 function validatePrice () {
   return +price.min <= +price.value;
@@ -94,6 +97,8 @@ const resetForm = () => {
   removeAdvertImages();
   address.value = `${initialLatLng.lat}, ${initialLatLng.lng}`;
   price.placeholder = '1000';
+  pristine.reset();
+  price.min = priceOption['flat'];
   priceSliderField.noUiSlider.reset();
   map.closePopup();
 };

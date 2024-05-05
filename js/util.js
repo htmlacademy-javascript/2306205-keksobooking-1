@@ -33,21 +33,33 @@ const showAlert = (message) => {
   }, 5000);
 };
 
+// Сообщение об успешной отправке формы
+
+
 const getSuccessMessage = () => {
   const successMessage = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
   document.body.appendChild(successMessage);
 
-  document.addEventListener('keydown', (evt) => {
+  function handleMouseClick () {
+    document.body.removeChild(successMessage);
+    document.removeEventListener('keydown', handleEscapePress);
+    document.removeEventListener('click', handleMouseClick);
+  };
+
+  function handleEscapePress (evt) {
     if (evt.key === 'Escape') {
       document.body.removeChild(successMessage);
+      document.removeEventListener('keydown', handleEscapePress);
+      document.removeEventListener('click', handleMouseClick);
     }
-  }, { once: true });
+  }
 
-  document.addEventListener('click', () => {
-    document.body.removeChild(successMessage);
-  }, { once: true });
+  document.addEventListener('keydown', handleEscapePress);
+  document.addEventListener('click', handleMouseClick);
 };
 
+
+// Сообщение об ошибке при отправке формы
 const getErrorMessage = () => {
   const errorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
   document.body.appendChild(errorMessage);
