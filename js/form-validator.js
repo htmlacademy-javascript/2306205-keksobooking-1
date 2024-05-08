@@ -2,6 +2,9 @@ import {map, mainMarker} from './create-map.js';
 import {sendData} from './fetch-data.js';
 import {roomsOption, priceOption} from './data.js';
 import {removeAdvertImages} from './load-photo.js';
+import {mainFilter} from './filters.js';
+import {createBaloons, removeBaloons} from './create-baloons.js';
+import {getData} from './fetch-data.js';
 
 const priceSliderField = document.querySelector('.ad-form__slider');
 const addAdvertForm = document.querySelector('.ad-form');
@@ -97,10 +100,14 @@ const resetForm = () => {
   removeAdvertImages();
   address.value = `${initialLatLng.lat}, ${initialLatLng.lng}`;
   price.placeholder = '1000';
-  pristine.reset();
   price.min = priceOption['flat'];
   priceSliderField.noUiSlider.reset();
   map.closePopup();
+  mainFilter.reset();
+  getData((data) => {
+    removeBaloons();
+    createBaloons(data);
+  });
 };
 
 
