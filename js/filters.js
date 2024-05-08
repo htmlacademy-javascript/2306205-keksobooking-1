@@ -63,6 +63,6 @@ const checkFeatures = (element) => Array.from(checkboxes).every((checkbox) => {
   }
 });
 
-export {filterTypes, filterRooms, filterGuests, filterPrice, checkFeatures, setFilterFormChangeHandler};
+export {mainFilter, filterTypes, filterRooms, filterGuests, filterPrice, checkFeatures, setFilterFormChangeHandler};
 
 

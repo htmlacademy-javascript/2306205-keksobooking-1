@@ -1,4 +1,5 @@
 import {getFormActivated} from './form-activity.js';
+document.querySelector('#map-canvas').style.backgroundColor = '#dddddd';
 
 const map = L.map('map-canvas')
   .on('load', () => {
