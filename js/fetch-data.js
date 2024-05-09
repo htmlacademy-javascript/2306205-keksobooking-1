@@ -1,5 +1,6 @@
-import {getFormActivated} from './form-activity.js';
 import {showAlert, getSuccessMessage, getErrorMessage} from './util.js';
+import {getFormActivated} from './form-activity.js';
+import {map} from './create-map.js';
 
 const BASE_URL = 'https://28.javascript.htmlacademy.pro/keksobooking';
 const Route = {
@@ -7,12 +8,21 @@ const Route = {
   SEND_DATA: '/',
 };
 
+const setMap = () => {
+  map.setView({
+    lat: 35.6895,
+    lng: 139.69171,
+  }, 12);
+};
+
 // Получение данных
 const getData = (cb) => {
   fetch(`${BASE_URL}${Route.GET_DATA}`)
     .then((response) => {
       if (response.ok) {
+        getFormActivated('ad-form');
         getFormActivated('map__filters');
+        setMap();
         return response.json();
       } else {
         throw new Error();
